@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail</title>
+    {% include "meta-data.html" %}
+</head>
+
+<body>
+    {% include 'homepage/navigation.html' %}
+    <br><br><br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <img src="{{vegetables_fruits_id.image}}" alt="" height="325px" width="100%">
+            </div>
+            <div class="col-4 mt-5">
+                <h3 class="font-weight-bold text-center">
+                    <button onclick="playAudio()">
+                        <i class='fas fa-volume-up w3-hover-text-blue' style='font-size:24px'></i>
+                    </button>
+                    {{ vegetables_fruits_id.word }}
+                </h3>
+                <br>
+                <h3 class="font-weight-bold text-center">{{ vegetables_fruits_id.pronunciation }}</h3><br>
+                <h3 class="text-success text-center"> {{ vegetables_fruits_id.mean }} </h3><br>
+                <div class="row ml-3">
+                    <div class="col-6 ml-5">
+                        <a href="{{ url_for('vegetablesAndFruits') }}"><button
+                                class="w3-button w3-block w3-round-large w3-light-blue"><i
+                                    class="fa fa-arrow-left text-dark "></i> </button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <audio id="myAudio">
+        <source src="{{vegetables_fruits_id.audio_link}}" type="audio/ogg">
+    </audio>
+    <script>
+        var x = document.getElementById("myAudio");
+        function playAudio() {
+            x.play();
+        }
+    </script>
+    {% include 'homepage/footer.html' %}
+</body>
+
+</html>
