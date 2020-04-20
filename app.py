@@ -1,5 +1,6 @@
 from flask import *
 from models.vegetablesFruits import Vegetablesfruits
+from models.animal import Animals
 from models.user import User
 import bcrypt
 import mlab
@@ -12,42 +13,6 @@ mlab.connect()
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/learn')
-def learn():
-    return render_template("learn.html")
-
-@app.route('/vegetablesAndFruits')
-def vegetablesAndFruits():
-    list_audio = []
-    list_word  = []
-    list_image = []
-    list_pronunciation = []
-    list_id = []
-     # get all document from dabase
-    total_vegetablesAndFruits = Vegetablesfruits.objects()
-    for i in total_vegetablesAndFruits:
-        audio = i.audio_link
-        word  = i.word
-        image = i.image
-        pronunciation = i.pronunciation
-        id = i.id
-        list_audio.append(audio)
-        list_word.append(word)
-        list_image.append(image)
-        list_pronunciation.append(pronunciation)
-        list_id.append(id)
-    return render_template("vegetablesAndFruits.html",
-                            list_audio=list_audio,
-                            list_word=list_word,
-                            list_image=list_image,
-                            list_pronunciation=list_pronunciation,
-                            list_id=list_id)
-    
-@app.route('/vegetablesAndFruitsDetail/<id>')
-def vegetablesAndFruitsDetail(id):
-    vegetables_fruits_id = Vegetablesfruits.objects.with_id(id)
-    return render_template("vegetablesAndFruitsDetail.html",vegetables_fruits_id=vegetables_fruits_id)
 
 @app.route("/login", methods = ["GET","POST"])
 def login():
@@ -91,6 +56,76 @@ def logout():
     del session["username"]
     return redirect("/login")
 
+
+@app.route('/learn')
+def learn():
+    return render_template("learn.html")
+
+@app.route('/vegetablesAndFruits')
+def vegetablesAndFruits():
+    list_audio = []
+    list_word  = []
+    list_image = []
+    list_pronunciation = []
+    list_id = []
+     # get all document from dabase
+    total_vegetablesAndFruits = Vegetablesfruits.objects()
+    for i in total_vegetablesAndFruits:
+        audio = i.audio_link
+        word  = i.word
+        image = i.image
+        pronunciation = i.pronunciation
+        id = i.id
+        list_audio.append(audio)
+        list_word.append(word)
+        list_image.append(image)
+        list_pronunciation.append(pronunciation)
+        list_id.append(id)
+    return render_template("vegetablesAndFruits.html",
+                            list_audio=list_audio,
+                            list_word=list_word,
+                            list_image=list_image,
+                            list_pronunciation=list_pronunciation,
+                            list_id=list_id)
+    
+@app.route('/vegetablesAndFruitsDetail/<id>')
+def vegetablesAndFruitsDetail(id):
+    vegetables_fruits_id = Vegetablesfruits.objects.with_id(id)
+    return render_template("vegetablesAndFruitsDetail.html",
+                            vegetables_fruits_id=vegetables_fruits_id)
+
+@app.route('/animals')
+def animals():
+    list_audio = []
+    list_word  = []
+    list_image = []
+    list_pronunciation = []
+    list_id = []
+     # get all document from dabase
+    total_animals = Animals.objects()
+    for i in total_animals:
+        audio = i.audio_link
+        word  = i.word
+        image = i.image
+        pronunciation = i.pronunciation
+        id = i.id
+        list_audio.append(audio)
+        list_word.append(word)
+        list_image.append(image)
+        list_pronunciation.append(pronunciation)
+        list_id.append(id)
+    return render_template("animals.html",
+                            list_audio=list_audio,
+                            list_word=list_word,
+                            list_image=list_image,
+                            list_pronunciation=list_pronunciation,
+                            list_id=list_id)
+
+
+@app.route('/animalDetail/<id>')
+def animalDetail(id):
+    animal_id = Animals.objects.with_id(id)
+    return render_template("animalDetail.html",animal_id=animal_id)
 
 if __name__ == '__main__':
     app.run(debug=True)

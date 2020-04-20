@@ -30,10 +30,10 @@
         </div>
     </nav>
     <br><br><br><br><br>
-    <h1 class="text-center font-weight-bold">༄༂ IMPROVE YOUR ENGLISH VOCABULARY ༄༂</h1>
+    <h1 class="text-center font-weight-bold">༄༄ IMPROVE YOUR ENGLISH VOCABULARY ༄༄</h1>
     <img src="../static/images/home.PNG" alt="" height="190px" width="100%">
     <hr style="  border: 3px solid rgb(46, 135, 232); margin-left: 130px" width="80%">
-    <h2 class="text-center font-weight-bold">Log in to start learning</h2>
+    <h2 class="text-center font-weight-bold">Log in to start learning</h2><br>
     <div class="container">
         <div class="row">
             <div class="col-3"></div>
@@ -45,8 +45,22 @@
             </div>
             <div class="col-3"></div>
         </div>
-    </div><br><br><br>
-
+    </div><br>
+    <hr style="  border: 3px solid rgb(46, 135, 232); margin-left: 130px" width="80%">
+    <div class="container">
+        <h2 class="text-center font-weight-bold">If you don't have an account ? </h2><br>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <a href="{{ url_for('register') }}"><button type="button"
+                        class="btn btn-outline-primary btn-block w3-round">
+                        <h5 class="font-weight-bold">Register</h5>
+                    </button></a>
+            </div>
+            <div class="col-3"></div>
+        </div>    
+    </div>
+    <br><br>
     {% include 'homepage/footer.html' %}
 
 </body>
