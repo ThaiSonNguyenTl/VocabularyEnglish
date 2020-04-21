@@ -14,6 +14,11 @@ mlab.connect()
 def index():
     return render_template('index.html')
 
+@app.route('/navigation')
+def navigation():
+    user = session.get('username')
+    return render_template("navigation.html",user=user)
+
 @app.route("/login", methods = ["GET","POST"])
 def login():
     if request.method == "GET":
@@ -59,10 +64,12 @@ def logout():
 
 @app.route('/learn')
 def learn():
-    return render_template("learn.html")
+    user = session.get('username')
+    return render_template("learn.html",user = user)
 
 @app.route('/vegetablesAndFruits')
 def vegetablesAndFruits():
+    user = session.get('username')
     list_audio = []
     list_word  = []
     list_image = []
@@ -86,16 +93,20 @@ def vegetablesAndFruits():
                             list_word=list_word,
                             list_image=list_image,
                             list_pronunciation=list_pronunciation,
-                            list_id=list_id)
+                            list_id=list_id,
+                            user = user)
     
 @app.route('/vegetablesAndFruitsDetail/<id>')
 def vegetablesAndFruitsDetail(id):
+    user = session.get('username')
     vegetables_fruits_id = Vegetablesfruits.objects.with_id(id)
     return render_template("vegetablesAndFruitsDetail.html",
-                            vegetables_fruits_id=vegetables_fruits_id)
+                            vegetables_fruits_id=vegetables_fruits_id,
+                            user = user)
 
 @app.route('/animals')
 def animals():
+    user = session.get('username')
     list_audio = []
     list_word  = []
     list_image = []
@@ -119,13 +130,21 @@ def animals():
                             list_word=list_word,
                             list_image=list_image,
                             list_pronunciation=list_pronunciation,
-                            list_id=list_id)
+                            list_id=list_id,
+                            user=user)
 
 
 @app.route('/animalDetail/<id>')
 def animalDetail(id):
+    user = session.get('username')
     animal_id = Animals.objects.with_id(id)
-    return render_template("animalDetail.html",animal_id=animal_id)
+    return render_template("animalDetail.html",
+                            animal_id=animal_id,
+                            user=user)
+
+# @app.route('/test')
+# def test():
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
