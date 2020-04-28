@@ -40,18 +40,26 @@ answer = input("Play game? ('y' to continue)")
 print(" ")
 while answer == "y":
 
-    vocabDictionary = {
-        "dachi" :"stance",
-        "zuke":"punch" ,
-        "uke":"block",
-        "geri":"kick",
-        "ge dan barai" :"downward block",
-        "age-uke":"rising block",
-        "soto uke":"inward block",
-        "uchi-uke":"outward block"
+    animalDictionary = {
+        "ngựa vằn":"Zebra",
+        "Hươu cao cổ":"Giraffe",
+        "Tê giác ":"Rhinoceros",
+        "Con voi ":"Elephant",
+        "Sư tử":"Lion",
+        "Con hổ":"Tiger",
+        "Con báo":"Leopard",
+        "Hà mã":"Hippopotamus",
+        "Linh dương đầu bò":"Gnu",
+        "Linh dương":"Antelope",
+        "Lạc đà":"Camel",
+        "Đại bàng":"Eagle",
+        "Cú mèo":"Owl",
+        "Chim ưng":"Falcon",
+        "Đà điểu":"Ostrich",
+        "Chim gõ kiến":"Woodpecker",
     }
     # turns words into a list 
-    keyword_list = list(vocabDictionary.keys()) 
+    keyword_list = list(animalDictionary.keys()) 
     # shuffle keywords
     random.shuffle(keyword_list)
     correct = 0
@@ -59,12 +67,13 @@ while answer == "y":
 
     for keyword in keyword_list:
         display = "{}"
-        print(display.format(keyword))
+        word = display.format(keyword)
+        print(word)
         userInputAnswer = input("ANSWER: ")
-        print(vocabDictionary[keyword])
+        print(animalDictionary[word])
         print(" ")
         
-        if userInputAnswer == (vocabDictionary[keyword]):
+        if userInputAnswer.lower() == (animalDictionary[word]).lower():
             print("CORRECT")
             correct += 1
         else:

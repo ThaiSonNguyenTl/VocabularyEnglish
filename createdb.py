@@ -122,11 +122,11 @@ mlab.connect()
 #           ]
 # for i in list_animals:
 #     db = Animals( 
-#         image = i["image"],
-#         word = i["word"],
-#         pronunciation= i["pronunciation"],
-#         mean = i["mean"],
-#         audio_link = i["audio_link"]
+        # image = i["image"],
+        # word = i["word"],
+        # pronunciation= i["pronunciation"],
+        # mean = i["mean"],
+        # audio_link = i["audio_link"]
                        
 #     )
 #     db.save()

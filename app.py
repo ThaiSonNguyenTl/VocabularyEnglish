@@ -1,14 +1,16 @@
 from flask import *
 from models.vegetablesFruits import Vegetablesfruits
 from models.animal import Animals
+from models.review import Reviews
 from models.user import User
 import bcrypt
+import random
+import time
 import mlab
 
 app = Flask(__name__)
 app.secret_key = 'mysecret'
 mlab.connect()
-
 
 @app.route('/')
 def index():
@@ -17,10 +19,19 @@ def index():
 @app.route('/navigation')
 def navigation():
     user = session.get('username')
-    return render_template("navigation.html",user=user)
+
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        numberOfWords += 1
+    return render_template("navigation.html",
+                            user=user,
+                            numberOfWords=numberOfWords)
 
 @app.route("/login", methods = ["GET","POST"])
 def login():
+    allWordSave = Reviews.objects()
+    allWordSave.delete()
     if request.method == "GET":
        return render_template("login.html")
     elif request.method == "POST":
@@ -35,7 +46,7 @@ def login():
     flash('Username or password wrong! Please try again!')
     return redirect(url_for('login'))
 
-@app.route('/register', methods=['POST', 'GET'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "GET":
          return render_template('register.html')
@@ -59,17 +70,29 @@ def register():
 @app.route('/logout')
 def logout():
     del session["username"]
+    allWordSave = Reviews.objects()
+    allWordSave.delete()
     return redirect("/login")
 
 
 @app.route('/learn')
 def learn():
     user = session.get('username')
-    return render_template("learn.html",user = user)
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        numberOfWords += 1
+    return render_template("learn.html",
+                            user = user,
+                            numberOfWords=numberOfWords)
 
 @app.route('/vegetablesAndFruits')
 def vegetablesAndFruits():
     user = session.get('username')
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        numberOfWords += 1
     list_audio = []
     list_word  = []
     list_image = []
@@ -94,19 +117,47 @@ def vegetablesAndFruits():
                             list_image=list_image,
                             list_pronunciation=list_pronunciation,
                             list_id=list_id,
-                            user = user)
+                            user = user,
+                            numberOfWords=numberOfWords)
     
-@app.route('/vegetablesAndFruitsDetail/<id>')
+@app.route('/vegetablesAndFruitsDetail/<id>', methods = ["GET","POST"])
 def vegetablesAndFruitsDetail(id):
     user = session.get('username')
     vegetables_fruits_id = Vegetablesfruits.objects.with_id(id)
-    return render_template("vegetablesAndFruitsDetail.html",
-                            vegetables_fruits_id=vegetables_fruits_id,
-                            user = user)
-
+    # display number of words save in review
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        numberOfWords += 1
+    if request.method == "GET":
+        return render_template("vegetablesAndFruitsDetail.html",
+                                vegetables_fruits_id=vegetables_fruits_id,
+                                user = user,
+                                numberOfWords=numberOfWords)
+    else:
+        if user is not None:
+            wordReview = Reviews(
+                image = vegetables_fruits_id.image,
+                word = vegetables_fruits_id.word,
+                pronunciation= vegetables_fruits_id.pronunciation,
+                mean =vegetables_fruits_id.mean,
+                audio_link = vegetables_fruits_id.audio_link
+            )
+            wordReview.save()        
+            return redirect(url_for('vegetablesAndFruits'))  
+        else:
+            flash('You must login first !')
+            return render_template("vegetablesAndFruitsDetail.html",
+                                    vegetables_fruits_id=vegetables_fruits_id,
+                                    user=user,
+                                    numberOfWords=numberOfWords) 
 @app.route('/animals')
 def animals():
     user = session.get('username')
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        numberOfWords += 1
     list_audio = []
     list_word  = []
     list_image = []
@@ -131,20 +182,96 @@ def animals():
                             list_image=list_image,
                             list_pronunciation=list_pronunciation,
                             list_id=list_id,
-                            user=user)
+                            user=user,
+                            numberOfWords=numberOfWords)
 
 
-@app.route('/animalDetail/<id>')
+@app.route('/animalDetail/<id>', methods = ["GET","POST"])
 def animalDetail(id):
     user = session.get('username')
     animal_id = Animals.objects.with_id(id)
-    return render_template("animalDetail.html",
-                            animal_id=animal_id,
-                            user=user)
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        numberOfWords += 1
+    if request.method == "GET":
+        return render_template("animalDetail.html",
+                                animal_id=animal_id,
+                                user=user,
+                                numberOfWords=numberOfWords)
+    else:
+        if user is not None:
+            wordReview = Reviews(
+                image = animal_id.image,
+                word = animal_id.word,
+                pronunciation= animal_id.pronunciation,
+                mean =animal_id.mean,
+                audio_link = animal_id.audio_link
+            )
+            wordReview.save()        
+            return redirect(url_for('animals'))
+        else:
+            flash('You must login first !')
+            return render_template("animalDetail.html",
+                                    animal_id=animal_id,
+                                    user=user,
+                                    numberOfWords=numberOfWords) 
+            
 
-# @app.route('/test')
-# def test():
-    
+@app.route('/test', methods = ['GET','POST'])
+def test():
+    animalDictionary = {
+            "Ngựa vằn":"Zebra",
+            "Hươu cao cổ":"Giraffe",
+            "Tê giác":"Rhinoceros",
+            "Con voi":"Elephant",
+            "Sư tử":"Lion",
+            "Con hổ":"Tiger",
+            "Con báo":"Leopard",
+            "Hà mã":"Hippopotamus",
+            "Linh dương đầu bò":"Gnu",
+            "Linh dương":"Antelope",
+            "Lạc đà":"Camel",
+            "Đại bàng":"Eagle",
+            "Cú mèo":"Owl",
+            "Chim ưng":"Falcon",
+            "Đà điểu":"Ostrich",
+            "Chim gõ kiến":"Woodpecker",
+        }
+
+    keyword_list = list(animalDictionary.keys()) 
+   
+    if request.method == "GET":
+        return render_template("test.html",keyword_list=keyword_list,animalDictionary=animalDictionary)   
+    if request.method == "POST":
+        if request.form.get("answer").lower() == (animalDictionary[keyword_list[0]]).lower():
+            flash("CORRECT")
+        else:
+            flash("WRONG") 
+                
+        return redirect(url_for('test'))
+ 
+@app.route('/review')
+def review():
+    user = session.get('username')
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        numberOfWords += 1
+    return render_template("review.html",
+                            user = user,
+                            allWordSave = allWordSave,
+                            numberOfWords=numberOfWords)
+
+@app.route('/deleteWord/<wordId>')
+def deleteWord(wordId):
+    word_delete_id = Reviews.objects.with_id(wordId)
+    if word_delete_id is not None:
+        word_delete_id.delete()
+        return redirect(url_for('review'))
+    else:
+        return("Word not found")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

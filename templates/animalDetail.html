@@ -32,6 +32,24 @@
                                 class="w3-button w3-block w3-round-large w3-light-blue"><i
                                     class="fa fa-arrow-left text-dark "></i> </button></a>
                     </div>
+                    <div class="col-6 mt-2 ml-5">  
+                    {% if user is none %}
+                        <form method = "POST">
+                            <button type="submit" class="w3-button w3-block w3-round-large w3-light-blue"> SAVE WORD</button>   
+                        </form>
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                            <div class="alert alert-warning">
+                                {{ messages[0] }}
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                    {% else %}  
+                            <form method = "POST">
+                                <button type="submit" class="w3-button w3-block w3-round-large w3-light-blue"> SAVE WORD</button>   
+                            </form>
+                    {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
