@@ -23,15 +23,14 @@ def navigation():
     allWordSave = Reviews.objects()
     numberOfWords = 0
     for i in allWordSave:
-        numberOfWords += 1
+        if i.username == user:
+            numberOfWords += 1
     return render_template("navigation.html",
                             user=user,
                             numberOfWords=numberOfWords)
 
 @app.route("/login", methods = ["GET","POST"])
 def login():
-    allWordSave = Reviews.objects()
-    allWordSave.delete()
     if request.method == "GET":
        return render_template("login.html")
     elif request.method == "POST":
@@ -70,8 +69,6 @@ def register():
 @app.route('/logout')
 def logout():
     del session["username"]
-    allWordSave = Reviews.objects()
-    allWordSave.delete()
     return redirect("/login")
 
 
@@ -81,7 +78,8 @@ def learn():
     allWordSave = Reviews.objects()
     numberOfWords = 0
     for i in allWordSave:
-        numberOfWords += 1
+        if i.username == user:
+            numberOfWords += 1
     return render_template("learn.html",
                             user = user,
                             numberOfWords=numberOfWords)
@@ -92,7 +90,8 @@ def vegetablesAndFruits():
     allWordSave = Reviews.objects()
     numberOfWords = 0
     for i in allWordSave:
-        numberOfWords += 1
+        if i.username == user:
+            numberOfWords += 1
     list_audio = []
     list_word  = []
     list_image = []
@@ -128,7 +127,8 @@ def vegetablesAndFruitsDetail(id):
     allWordSave = Reviews.objects()
     numberOfWords = 0
     for i in allWordSave:
-        numberOfWords += 1
+        if i.username == user:
+            numberOfWords += 1
     if request.method == "GET":
         return render_template("vegetablesAndFruitsDetail.html",
                                 vegetables_fruits_id=vegetables_fruits_id,
@@ -141,7 +141,8 @@ def vegetablesAndFruitsDetail(id):
                 word = vegetables_fruits_id.word,
                 pronunciation= vegetables_fruits_id.pronunciation,
                 mean =vegetables_fruits_id.mean,
-                audio_link = vegetables_fruits_id.audio_link
+                audio_link = vegetables_fruits_id.audio_link,
+                username = user
             )
             wordReview.save()        
             return redirect(url_for('vegetablesAndFruits'))  
@@ -157,7 +158,8 @@ def animals():
     allWordSave = Reviews.objects()
     numberOfWords = 0
     for i in allWordSave:
-        numberOfWords += 1
+        if i.username == user:
+            numberOfWords += 1
     list_audio = []
     list_word  = []
     list_image = []
@@ -193,7 +195,8 @@ def animalDetail(id):
     allWordSave = Reviews.objects()
     numberOfWords = 0
     for i in allWordSave:
-        numberOfWords += 1
+        if i.username == user:
+            numberOfWords += 1
     if request.method == "GET":
         return render_template("animalDetail.html",
                                 animal_id=animal_id,
@@ -206,7 +209,8 @@ def animalDetail(id):
                 word = animal_id.word,
                 pronunciation= animal_id.pronunciation,
                 mean =animal_id.mean,
-                audio_link = animal_id.audio_link
+                audio_link = animal_id.audio_link,
+                username = user
             )
             wordReview.save()        
             return redirect(url_for('animals'))
@@ -257,7 +261,8 @@ def review():
     allWordSave = Reviews.objects()
     numberOfWords = 0
     for i in allWordSave:
-        numberOfWords += 1
+        if i.username == user:
+            numberOfWords += 1
     return render_template("review.html",
                             user = user,
                             allWordSave = allWordSave,

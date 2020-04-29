@@ -28,25 +28,27 @@
     </div>
     <div style= "margin-left: 150px;">
         {% for wordSave in allWordSave %}
-        <div class="row">
-            <div class="col-6 w3-display-container">
-                <img src="{{wordSave.image}}" alt="" height="325px" width="100%">
-                <div class="w3-display-bottommiddle w3-display-hover">
-                    <audio controls>
-                        <source src="{{ wordSave.audio_link }}" type="audio/ogg">
-                    </audio>
+            {% if wordSave.username == user %}
+                <div class="row">
+                    <div class="col-6 w3-display-container">
+                        <img src="{{wordSave.image}}" alt="" height="325px" width="100%">
+                        <div class="w3-display-bottommiddle w3-display-hover">
+                            <audio controls>
+                                <source src="{{ wordSave.audio_link }}" type="audio/ogg">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class="col-4 mt-5">
+                        <h3 class="font-weight-bold text-center">
+                            {{ wordSave.word }}
+                        </h3>
+                        <h3 class="font-weight-bold text-center">{{ wordSave.pronunciation }}</h3>
+                        <h3 class="text-success text-center"> {{ wordSave.mean }} </h3><br>
+                        <a href="{{ url_for('deleteWord',wordId = wordSave.id) }}" class="d-flex justify-content-center"><button class="btn btn-outline-danger "><i class="fa fa-trash"> Xóa</i></button></a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-4 mt-5">
-                <h3 class="font-weight-bold text-center">
-                    {{ wordSave.word }}
-                </h3>
-                <h3 class="font-weight-bold text-center">{{ wordSave.pronunciation }}</h3>
-                <h3 class="text-success text-center"> {{ wordSave.mean }} </h3><br>
-                <a href="{{ url_for('deleteWord',wordId = wordSave.id) }}" class="d-flex justify-content-center"><button class="btn btn-outline-danger "><i class="fa fa-trash"> Xóa</i></button></a>
-            </div>
-        </div>
-        <hr style="  border: 1px solid rgb(46, 135, 232); " width="80%">
+                <hr style="  border: 1px solid rgb(46, 135, 232); " width="80%">
+            {% endif %}
         {% endfor %}
     </div>
     <br><br><br><br><br><br><br><br>

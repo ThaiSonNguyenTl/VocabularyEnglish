@@ -131,3 +131,112 @@ mlab.connect()
 #     )
 #     db.save()
 
+list_food = [
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+         { 
+            "image" : "",
+            "word" : "",
+            "pronunciation": "",
+            "mean" : "",
+            "audio_link": "",
+        },
+    
+]
+
