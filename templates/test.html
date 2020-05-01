@@ -12,7 +12,7 @@
   <br><br><br><br><br><br><br>
   <div class="container">
 
-    <h1>{{keyword_list[0]}}</h1>
+   
   
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -21,13 +21,17 @@
     </div>
     {% endif %}
     {% endwith %}
-  
-    <form method=POST action="{{ url_for('test') }}">
+    <h1>{{word}}</h1>
+   
+      
+      
+        <input type="text" class="form-control" name="answer" placeholder="Enter the answer "><br>
+     
       <label class="font-weight-bold text-dark">Translate this word.</label>
-      <input type="text" class="form-control" name="answer" placeholder="Enter the answer "><br>
+     
       <button type="submit" >check</button>
-
-    </form>
+   
+    <h1>{{ display }}</h1>
   </div>
 </body>
 

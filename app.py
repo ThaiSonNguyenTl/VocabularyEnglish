@@ -1,11 +1,10 @@
 from flask import *
 from models.vegetablesFruits import Vegetablesfruits
 from models.animal import Animals
+from models.food import Food
 from models.review import Reviews
 from models.user import User
 import bcrypt
-import random
-import time
 import mlab
 
 app = Flask(__name__)
@@ -221,40 +220,75 @@ def animalDetail(id):
                                     user=user,
                                     numberOfWords=numberOfWords) 
             
+@app.route('/food')
+def food():
+    user = session.get('username')
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        if i.username == user:
+            numberOfWords += 1
+    list_audio = []
+    list_word  = []
+    list_image = []
+    list_pronunciation = []
+    list_id = []
+     # get all document from dabase
+    total_food = Food.objects()
+    for i in total_food:
+        audio = i.audio_link
+        word  = i.word
+        image = i.image
+        pronunciation = i.pronunciation
+        id = i.id
+        list_audio.append(audio)
+        list_word.append(word)
+        list_image.append(image)
+        list_pronunciation.append(pronunciation)
+        list_id.append(id)
+    return render_template("food.html",
+                            list_audio=list_audio,
+                            list_word=list_word,
+                            list_image=list_image,
+                            list_pronunciation=list_pronunciation,
+                            list_id=list_id,
+                            user=user,
+                            numberOfWords=numberOfWords)
 
-@app.route('/test', methods = ['GET','POST'])
-def test():
-    animalDictionary = {
-            "Ngựa vằn":"Zebra",
-            "Hươu cao cổ":"Giraffe",
-            "Tê giác":"Rhinoceros",
-            "Con voi":"Elephant",
-            "Sư tử":"Lion",
-            "Con hổ":"Tiger",
-            "Con báo":"Leopard",
-            "Hà mã":"Hippopotamus",
-            "Linh dương đầu bò":"Gnu",
-            "Linh dương":"Antelope",
-            "Lạc đà":"Camel",
-            "Đại bàng":"Eagle",
-            "Cú mèo":"Owl",
-            "Chim ưng":"Falcon",
-            "Đà điểu":"Ostrich",
-            "Chim gõ kiến":"Woodpecker",
-        }
-
-    keyword_list = list(animalDictionary.keys()) 
-   
+@app.route('/foodDetail/<id>', methods = ["GET","POST"])
+def foodDetail(id):
+    user = session.get('username')
+    food_id = Food.objects.with_id(id)
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        if i.username == user:
+            numberOfWords += 1
     if request.method == "GET":
-        return render_template("test.html",keyword_list=keyword_list,animalDictionary=animalDictionary)   
-    if request.method == "POST":
-        if request.form.get("answer").lower() == (animalDictionary[keyword_list[0]]).lower():
-            flash("CORRECT")
+        return render_template("foodDetail.html",
+                                food_id=food_id,
+                                user=user,
+                                numberOfWords=numberOfWords)
+    else:
+        if user is not None:
+            wordReview = Reviews(
+                image = food_id.image,
+                word = food_id.word,
+                pronunciation= food_id.pronunciation,
+                mean =food_id.mean,
+                audio_link = food_id.audio_link,
+                username = user
+            )
+            wordReview.save()        
+            return redirect(url_for('food'))
         else:
-            flash("WRONG") 
-                
-        return redirect(url_for('test'))
- 
+            flash('You must login first !')
+            return render_template("foodDetail.html",
+                                    food_id=food_id,
+                                    user=user,
+                                    numberOfWords=numberOfWords) 
+            
+    
 @app.route('/review')
 def review():
     user = session.get('username')
@@ -276,6 +310,34 @@ def deleteWord(wordId):
         return redirect(url_for('review'))
     else:
         return("Word not found")
+
+@app.route('/test', methods = ['GET','POST'])
+def test():
+    animalDictionary = {
+            "Ngựa vằn":"Zebra",
+            "Hươu cao cổ":"Giraffe",
+            "Tê giác":"Rhinoceros",
+            "Con voi":"Elephant",
+            "Sư tử":"Lion",
+            "Con hổ":"Tiger",
+            "Con báo":"Leopard",
+            "Hà mã":"Hippopotamus",
+            "Linh dương đầu bò":"Gnu",
+            "Linh dương":"Antelope",
+            "Lạc đà":"Camel",
+            "Đại bàng":"Eagle",
+            "Cú mèo":"Owl",
+            "Chim ưng":"Falcon",
+            "Đà điểu":"Ostrich",
+            "Chim gõ kiến":"Woodpecker",
+        }
+    keyword_list = list(animalDictionary.keys()) 
+    correct = 0
+    wrong = 0 
+    for keyword in keyword_list:
+        display = "{}"
+        word = display.format(keyword)
+        return render_template("test.html",word = word,display = display)  
 
 
 if __name__ == '__main__':
