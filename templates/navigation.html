@@ -10,7 +10,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top hover-icon">
-        <a class="navbar-brand font-weight-bold w3-large" href="">
+        <a class="navbar-brand w3-hover-sepia" href="{{ url_for('index')}}">
             <img src="../../static/images/Capture.PNG" width="auto" height="90px" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -58,7 +58,7 @@
                             <button class="dropdown-item" type="button"><a href="{{ url_for('food') }}" class="nav-link w3-hover-text-blue">
                                 <i class="fas fa-hamburger"></i> Food
                             </a></button>
-                            <button class="dropdown-item" type="button"><a href="#" class="nav-link w3-hover-text-blue">
+                            <button class="dropdown-item" type="button"><a href="{{ url_for('actions') }}" class="nav-link w3-hover-text-blue">
                                 <i class="fas fa-running"></i> Action
                             </a></button>
                         </div>

@@ -2,6 +2,7 @@ from flask import *
 from models.vegetablesFruits import Vegetablesfruits
 from models.animal import Animals
 from models.food import Food
+from models.action import Actions
 from models.review import Reviews
 from models.user import User
 import bcrypt
@@ -288,7 +289,74 @@ def foodDetail(id):
                                     user=user,
                                     numberOfWords=numberOfWords) 
             
-    
+@app.route('/actions')
+def actions():
+    user = session.get('username')
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        if i.username == user:
+            numberOfWords += 1
+    list_audio = []
+    list_word  = []
+    list_image = []
+    list_pronunciation = []
+    list_id = []
+     # get all document from dabase
+    total_actions = Actions.objects()
+    for i in total_actions:
+        audio = i.audio_link
+        word  = i.word
+        image = i.image
+        pronunciation = i.pronunciation
+        id = i.id
+        list_audio.append(audio)
+        list_word.append(word)
+        list_image.append(image)
+        list_pronunciation.append(pronunciation)
+        list_id.append(id)
+    return render_template("actions.html",
+                            list_audio=list_audio,
+                            list_word=list_word,
+                            list_image=list_image,
+                            list_pronunciation=list_pronunciation,
+                            list_id=list_id,
+                            user=user,
+                            numberOfWords=numberOfWords)
+
+@app.route('/actionsDetail/<id>', methods = ["GET","POST"])
+def actionsDetail(id):
+    user = session.get('username')
+    actions_id = Actions.objects.with_id(id)
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        if i.username == user:
+            numberOfWords += 1
+    if request.method == "GET":
+        return render_template("actionsDetail.html",
+                                actions_id=actions_id,
+                                user=user,
+                                numberOfWords=numberOfWords)
+    else:
+        if user is not None:
+            wordReview = Reviews(
+                image = actions_id.image,
+                word = actions_id.word,
+                pronunciation= actions_id.pronunciation,
+                mean =actions_id.mean,
+                audio_link = actions_id.audio_link,
+                username = user
+            )
+            wordReview.save()        
+            return redirect(url_for('actions'))
+        else:
+            flash('You must login first !')
+            return render_template("actionsDetail.html",
+                                    actions_id=actions_id,
+                                    user=user,
+                                    numberOfWords=numberOfWords) 
+
 @app.route('/review')
 def review():
     user = session.get('username')
