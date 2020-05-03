@@ -41,7 +41,11 @@ def login():
     if login_user:
         if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
             session['username'] = request.form['username']
-            return redirect(url_for('learn'))
+            session['password'] = request.form['pass']
+            if session['username'] == "admin" and session['password'] == "admin":
+                return redirect(url_for('adminWord'))
+            else:
+                return redirect(url_for('learn'))
     flash('Username or password wrong! Please try again!')
     return redirect(url_for('login'))
 
@@ -407,6 +411,129 @@ def test():
         word = display.format(keyword)
         return render_template("test.html",word = word,display = display)  
 
+
+@app.route('/adminWord')
+def adminWord():
+    user = session.get('username')
+    if user is None:
+        return redirect(url_for('login'))
+    else:
+        total_vegetablesAndFruits = Vegetablesfruits.objects()
+        total_animals = Animals.objects()
+        total_food = Food.objects()
+        total_actions = Actions.objects()
+        x = len(total_vegetablesAndFruits)
+        y = len(total_animals)
+        z = len(total_food)
+        return render_template("adminWord.html",
+                            total_vegetablesAndFruits = total_vegetablesAndFruits,
+                            total_animals = total_animals,
+                            total_food = total_food,
+                            total_actions = total_actions,
+                            x = x,
+                            y = y,
+                            z = z )
+# delete word in adminWord
+@app.route('/deleteVegetablesFruits/<id>')
+def deleteVegetablesFruits(id):
+    word_delete = Vegetablesfruits.objects.with_id(id)
+    if word_delete is not None:
+        word_delete.delete()
+        return redirect(url_for('adminWord'))
+    else:
+        return "Word not found"
+
+@app.route('/deleteAnimals/<id>')
+def deleteAnimals(id):
+    word_delete = Animals.objects.with_id(id)
+    if word_delete is not None:
+        word_delete.delete()
+        return redirect(url_for('adminWord'))
+    else:
+        return "Word not found"
+
+@app.route('/deleteFood/<id>')
+def deleteFood(id):
+    word_delete = Food.objects.with_id(id)
+    if word_delete is not None:
+        word_delete.delete()
+        return redirect(url_for('adminWord'))
+    else:
+        return "Word not found"
+
+@app.route('/deleteActions/<id>')
+def deleteActions(id):
+    word_delete = Actions.objects.with_id(id)
+    if word_delete is not None:
+        word_delete.delete()
+        return redirect(url_for('adminWord'))
+    else:
+        return "Word not found"
+
+# Add word in adminWord
+@app.route('/addWordVegetFruits', methods = ["GET","POST"])
+def addWordVegetFruits():
+    if request.method == "GET":
+        return render_template("addWord.html")
+    else:
+        form = request.form
+        add_word = Vegetablesfruits(
+            image = form["image"],
+            word = form["word"],
+            pronunciation= form["pronunciation"],
+            mean = form["mean"],
+            audio_link = form["audio_link"],
+        )
+        add_word.save()
+        return redirect(url_for('adminWord'))
+
+@app.route('/addWordAnimals', methods = ["GET","POST"])
+def addWordAnimals():
+    if request.method == "GET":
+        return render_template("addWord.html")
+    else:
+        form = request.form
+        add_word = Animals(
+            image = form["image"],
+            word = form["word"],
+            pronunciation= form["pronunciation"],
+            mean = form["mean"],
+            audio_link = form["audio_link"],
+        )
+        add_word.save()
+        return redirect(url_for('adminWord'))
+
+@app.route('/addWordFood', methods = ["GET","POST"])
+def addWordFood():
+    if request.method == "GET":
+        return render_template("addWord.html")
+    else:
+        form = request.form
+        add_word = Food(
+            image = form["image"],
+            word = form["word"],
+            pronunciation= form["pronunciation"],
+            mean = form["mean"],
+            audio_link = form["audio_link"],
+        )
+        add_word.save()
+        return redirect(url_for('adminWord'))
+
+@app.route('/addWordActions', methods = ["GET","POST"])
+def addWordActions():
+    if request.method == "GET":
+        return render_template("addWord.html")
+    else:
+        form = request.form
+        add_word = Actions(
+            image = form["image"],
+            word = form["word"],
+            pronunciation= form["pronunciation"],
+            mean = form["mean"],
+            audio_link = form["audio_link"],
+        )
+        add_word.save()
+        return redirect(url_for('adminWord'))
 
 if __name__ == '__main__':
     app.run(debug=True)
