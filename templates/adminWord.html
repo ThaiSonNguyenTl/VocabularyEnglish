@@ -64,8 +64,9 @@
                 <td class="w3-center">{{ w.mean }}</td>
                 <td class="w3-center"><a href="{{ url_for('deleteVegetablesFruits',id = w.id) }}"><i
                             class="fa fa-trash text-dark w3-hover-text-red"> Delete</i></a></td>
-            </tr>
+        
             {% endfor %}
+            
             <!-- animal -->
             {% for wa in total_animals %}
             <tr>

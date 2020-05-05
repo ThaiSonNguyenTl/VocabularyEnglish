@@ -13,6 +13,9 @@
     <br><br><br><br>
     <div class="container">
         <div class="row">
+            <div class="col-2 mt-3">
+                <a href="{{ url_for('food') }}"><img src="../static/images/arrowback.svg" height="40px" width="50%"></a>
+            </div>
             <div class="col-6">
                 <img src="{{food_id.image}}" alt="" height="325px" width="100%">
             </div>
@@ -26,16 +29,11 @@
                 <br>
                 <h3 class="font-weight-bold text-center">{{ food_id.pronunciation }}</h3><br>
                 <h3 class="text-success text-center"> {{ food_id.mean }} </h3><br>
-                <div class="row ml-3">
-                    <div class="col-6 ml-5">
-                        <a href="{{ url_for('food') }}"><button
-                                class="w3-button w3-block w3-round-large w3-light-blue"><i
-                                    class="fa fa-arrow-left text-dark "></i> </button></a>
-                    </div>
+                <div class="row ml-5">
                     <div class="col-6 mt-2 ml-5">  
                     {% if user is none %}
                         <form method = "POST">
-                            <button type="submit" class="w3-button w3-block w3-round-large w3-light-blue"> SAVE WORD</button>   
+                            <button type="submit" class="w3-button w3-block w3-light-blue"> SAVE WORD</button>   
                         </form>
                             {% with messages = get_flashed_messages() %}
                             {% if messages %}
@@ -46,7 +44,7 @@
                             {% endwith %}
                     {% else %}  
                             <form method = "POST">
-                                <button type="submit" class="w3-button w3-block w3-round-large w3-light-blue"> SAVE WORD</button>   
+                                <button type="submit" class="w3-button w3-block w3-light-blue"> SAVE WORD</button>   
                             </form>
                     {% endif %}
                     </div>
