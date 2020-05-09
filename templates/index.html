@@ -7,6 +7,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Learn Vocabulary</title>
     {% include "meta-data.html" %}
+    <style>
+        .noAccount{
+            color: rgb(46, 135, 232);
+            border: 3px solid rgb(46, 135, 232);
+            background: #ffffff;
+        }
+        .noAccount:hover{
+            border-color: black;
+            background-color: rgb(46, 135, 232);
+            color: #ffffff;
+        }
+        .logined{
+            color: rgb(200, 18, 18);
+            border: 3px solid rgb(200, 18, 18);
+            background: #ffffff;
+        }
+        .logined:hover{
+            border-color: black;
+            background-color: rgb(200, 18, 18);
+            color: #ffffff;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,7 +54,7 @@
             <div class="col-3"></div>
             <div class="col-6">
                 <a href="{{ url_for('login') }}"  style="text-decoration:none" ><button type="button"
-                        class="btn btn-outline-danger btn-block w3-round-large">
+                        class="btn-block w3-round-large logined">
                         <h5 class="font-weight-bold">Log In</h5>
                     </button></a>
             </div>
@@ -45,8 +67,8 @@
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <a href="{{ url_for('learn') }}"  style="text-decoration:none"><button type="button"
-                        class="btn btn-outline-primary btn-block w3-round-large">
+            <a href="{{ url_for('learn') }}"  style="text-decoration:none;"><button type="button"
+                        class="btn-block w3-round-large noAccount">
                         <h5 class="font-weight-bold">Let's Go</h5>
                     </button></a>
             </div>

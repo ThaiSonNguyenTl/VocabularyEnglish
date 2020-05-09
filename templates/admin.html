@@ -155,7 +155,7 @@
                             <img src="{{ video.thumbnail }}" width="200px" height="130px">
                         </td>
                         <td class="text-center"> 
-                            <a href="#"><i class="fa fa-trash text-dark w3-hover-text-red"> Delete</i></a>
+                            <a href="{{ url_for('deleteVideo',id = video.id) }}"><i class="fa fa-trash text-dark w3-hover-text-red"> Delete</i></a>
                         </td>
                     </tr>
                 {% endfor %}

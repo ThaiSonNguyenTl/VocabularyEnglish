@@ -498,6 +498,14 @@ def deleteActions(id):
     else:
         return "Word not found"
 
+@app.route('/deleteVideo/<id>')
+def deleteVideo(id):
+    video_id = Video.objects.with_id(id)
+    if video_id is not None:
+        video_id.delete()
+        return redirect(url_for('admin'))
+    else:
+        return "video not found"
 # Add word in adminWord
 @app.route('/addWordVegetFruits', methods = ["GET","POST"])
 def addWordVegetFruits():
