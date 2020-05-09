@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Word</title>
+    <title>Admin</title>
     {% include "meta-data.html" %}
 </head>
 
@@ -120,9 +120,52 @@
             {% endfor %}
         </table>
         <br>
-    </div>
-    <a href="#" class="w3-button w3-black w3-padding-large w3-margin-bottom float-md-right"><i
-            class="fa fa-arrow-up w3-margin-right"></i></a>
+        <hr style="  border: 3px solid rgb(46, 135, 232); margin-left: 130px" width="80%">
+        <h1 class="text-center font-weight-bold">Video</h1>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <form method = 'post'>
+                    <p>  
+                        <label><b>Link:</b></label>
+                        <input class="w3-input w3-border" name="link" type="text" placeholder="Enter the link of video:" required>
+                    </p>
+                    <button class="btn btn-outline-primary w3-round-large w3-block" style="width:30%">Add</button>
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div> <br>
+        <table style="border: black solid 2px;" border="2px">
+            <thead>
+                <th class="text-center font-weight-bold">STT</th>
+                <th class="text-center font-weight-bold">Name</th>
+                <th class="text-center font-weight-bold">Views</th>
+                <th class="text-center font-weight-bold">Link</th>
+                <th class="text-center font-weight-bold">Image</th>
+                <th></th>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                    <tr>
+                        <td class="text-center">{{ loop.index }}</td>
+                        <td>{{ video.title }}</td>
+                        <td class="text-center">{{ video.views }}</td>
+                        <td>{{ video.link }}</td>
+                        <td>
+                            <img src="{{ video.thumbnail }}" width="200px" height="130px">
+                        </td>
+                        <td class="text-center"> 
+                            <a href="#"><i class="fa fa-trash text-dark w3-hover-text-red"> Delete</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div> <br>
+    <a href="#" class="w3-button w3-black w3-padding-large w3-margin-bottom float-md-right">
+        <i class="fa fa-arrow-up w3-margin-right"></i>
+    </a>
 </body>
 
 </html>

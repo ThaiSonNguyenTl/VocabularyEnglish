@@ -16,10 +16,10 @@
                 {% if user is not none %}
                 <li class="nav-item font-weight-bold">
                     <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle w3-hover-text-blue pb-0" type="button" id="dropdownMenu2" data-toggle="dropdown">
+                        <button class="btn btn-light dropdown-toggle w3-hover-text-blue pb-0" type="button" id="dropdownMenu" data-toggle="dropdown">
                             <p class="nav-link text-dark m-0 p-0 w3-hover-text-blue"><i class="fas fa-user-graduate"></i> {{user}} </p>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu">
                         <button class="dropdown-item" type="button"><a href="{{ url_for('logout') }}" class="nav-link w3-hover-text-blue">
                             Log Out <i class="fas fa-sign-out-alt"></i>
                         </a></button>
@@ -59,8 +59,8 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link w3-hover-text-blue pb-0" href="{{ url_for('test') }}"> <i class="fas fa-pen"></i>
-                        Test
+                    <a class="nav-link w3-hover-text-blue pb-0" href="{{ url_for('video') }}"> <i class="fas fa-video"></i>
+                        Video
                     </a>
                 </li>
 

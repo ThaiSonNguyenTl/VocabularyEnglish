@@ -9,11 +9,7 @@
 </head>
 
 <body>
-  <br><br><br><br><br><br><br>
   <div class="container">
-
-   
-  
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class="alert alert-success">
@@ -21,18 +17,18 @@
     </div>
     {% endif %}
     {% endwith %}
-    <h1>{{word}}</h1>
+  <h1>Animals</h1>
+  <form action="" method="POST">
+    <h2>Translate this word</h2>
+    <h2>{{ word }}</h2>
+    <input type="text" class="form-control" name="answer" placeholder="Enter the answer: ">
+    <button class="btn btn-outline-primary">Check</button><br>
+  </form>
+ 
    
       
       
-        <input type="text" class="form-control" name="answer" placeholder="Enter the answer "><br>
-     
-      <label class="font-weight-bold text-dark">Translate this word.</label>
-     
-      <button type="submit" >check</button>
-   
-    <h1>{{ display }}</h1>
-  </div>
+  </div> 
 </body>
 
 </html>

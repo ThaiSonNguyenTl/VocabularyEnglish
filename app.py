@@ -5,6 +5,8 @@ from models.food import Food
 from models.action import Actions
 from models.review import Reviews
 from models.user import User
+from models.video import Video
+from youtube_dl import YoutubeDL
 import bcrypt
 import mlab
 
@@ -43,7 +45,7 @@ def login():
             session['username'] = request.form['username']
             session['password'] = request.form['pass']
             if session['username'] == "admin" and session['password'] == "admin":
-                return redirect(url_for('adminWord'))
+                return redirect(url_for('admin'))
             else:
                 return redirect(url_for('learn'))
     flash('Username or password wrong! Please try again!')
@@ -361,6 +363,34 @@ def actionsDetail(id):
                                     user=user,
                                     numberOfWords=numberOfWords) 
 
+@app.route('/video')
+def video():
+    user = session.get('username')
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        if i.username == user:
+            numberOfWords += 1
+    videos = Video.objects()
+    return render_template("videos.html",
+                            videos = videos,
+                            user = user,
+                            numberOfWords = numberOfWords)
+
+
+@app.route('/detailVideo/<youtube_id>')
+def detailVideo(youtube_id):
+    user = session.get('username')
+    allWordSave = Reviews.objects()
+    numberOfWords = 0
+    for i in allWordSave:
+        if i.username == user:
+            numberOfWords += 1
+    return render_template("detailVideo.html",
+                            youtube_id = youtube_id,
+                            user = user,
+                            numberOfWords = numberOfWords)
+
 @app.route('/review')
 def review():
     user = session.get('username')
@@ -383,37 +413,8 @@ def deleteWord(wordId):
     else:
         return("Word not found")
 
-@app.route('/test', methods = ['GET','POST'])
-def test():
-    animalDictionary = {
-            "Ngựa vằn":"Zebra",
-            "Hươu cao cổ":"Giraffe",
-            "Tê giác":"Rhinoceros",
-            "Con voi":"Elephant",
-            "Sư tử":"Lion",
-            "Con hổ":"Tiger",
-            "Con báo":"Leopard",
-            "Hà mã":"Hippopotamus",
-            "Linh dương đầu bò":"Gnu",
-            "Linh dương":"Antelope",
-            "Lạc đà":"Camel",
-            "Đại bàng":"Eagle",
-            "Cú mèo":"Owl",
-            "Chim ưng":"Falcon",
-            "Đà điểu":"Ostrich",
-            "Chim gõ kiến":"Woodpecker",
-        }
-    keyword_list = list(animalDictionary.keys()) 
-    correct = 0
-    wrong = 0 
-    for keyword in keyword_list:
-        display = "{}"
-        word = display.format(keyword)
-        return render_template("test.html",word = word,display = display)  
-
-
-@app.route('/adminWord')
-def adminWord():
+@app.route('/admin', methods = ['GET','POST'])
+def admin():
     user = session.get('username')
     if user is None:
         return redirect(url_for('login'))
@@ -425,21 +426,48 @@ def adminWord():
         x = len(total_vegetablesAndFruits)
         y = len(total_animals)
         z = len(total_food)
-        return render_template("adminWord.html",
-                            total_vegetablesAndFruits = total_vegetablesAndFruits,
-                            total_animals = total_animals,
-                            total_food = total_food,
-                            total_actions = total_actions,
-                            x = x,
-                            y = y,
-                            z = z )
+        if request.method == 'GET':
+            videos = Video.objects()
+            return render_template("admin.html",
+                                    total_vegetablesAndFruits = total_vegetablesAndFruits,
+                                    total_animals = total_animals,
+                                    total_food = total_food,
+                                    total_actions = total_actions,
+                                    x = x,
+                                    y = y,
+                                    z = z,
+                                    videos = videos )
+        elif request.method == 'POST':
+            form = request.form
+            link = form['link']
+
+            ydl = YoutubeDL()
+
+            data = ydl.extract_info(link, download=False)
+
+            title = data['title']
+            thumbnail = data['thumbnail']
+            views = data['view_count']
+            youtube_id = data['id']
+            link = link
+            video = Video( title = title,
+                            thumbnail = thumbnail,
+                            views = views,
+                            youtube_id = youtube_id,
+                            link = link,
+                         )
+            video.save()
+            return redirect(url_for('admin'))
+
+
+
 # delete word in adminWord
 @app.route('/deleteVegetablesFruits/<id>')
 def deleteVegetablesFruits(id):
     word_delete = Vegetablesfruits.objects.with_id(id)
     if word_delete is not None:
         word_delete.delete()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
     else:
         return "Word not found"
 
@@ -448,7 +476,7 @@ def deleteAnimals(id):
     word_delete = Animals.objects.with_id(id)
     if word_delete is not None:
         word_delete.delete()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
     else:
         return "Word not found"
 
@@ -457,7 +485,7 @@ def deleteFood(id):
     word_delete = Food.objects.with_id(id)
     if word_delete is not None:
         word_delete.delete()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
     else:
         return "Word not found"
 
@@ -466,7 +494,7 @@ def deleteActions(id):
     word_delete = Actions.objects.with_id(id)
     if word_delete is not None:
         word_delete.delete()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
     else:
         return "Word not found"
 
@@ -485,7 +513,7 @@ def addWordVegetFruits():
             audio_link = form["audio_link"],
         )
         add_word.save()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
 
 @app.route('/addWordAnimals', methods = ["GET","POST"])
 def addWordAnimals():
@@ -501,7 +529,7 @@ def addWordAnimals():
             audio_link = form["audio_link"],
         )
         add_word.save()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
 
 @app.route('/addWordFood', methods = ["GET","POST"])
 def addWordFood():
@@ -517,7 +545,7 @@ def addWordFood():
             audio_link = form["audio_link"],
         )
         add_word.save()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
 
 @app.route('/addWordActions', methods = ["GET","POST"])
 def addWordActions():
@@ -533,7 +561,7 @@ def addWordActions():
             audio_link = form["audio_link"],
         )
         add_word.save()
-        return redirect(url_for('adminWord'))
+        return redirect(url_for('admin'))
 
 if __name__ == '__main__':
     app.run(debug=True)
